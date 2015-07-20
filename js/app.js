@@ -111,15 +111,6 @@ $(function() {
             });
         }
 
-        View.prototype.renderMissedDays = function() {
-            $missedDays = $('tbody .missed-col');
-            var i;
-            for (i = 0; i < $missedDays.length; i++) {
-                var thing = $missedDays[i];
-                thing.innerHTML = model.missedDays[model.names[i]];
-            }
-        }
-
         var createTableHead = function(numDays) {
             var html = '<tr>\
                 <th class="name-col">Student Name</th>';
@@ -153,6 +144,16 @@ $(function() {
             self.$allCheckboxes = $('tbody input');
 
             self.addClickHandlers();
+            this.updateMissedDays();
+        }
+
+        Controller.prototype.updateMissedDays = function() {
+            $missedDays = $('tbody .missed-col');
+            var i;
+            for (i = 0; i < $missedDays.length; i++) {
+                var thing = $missedDays[i];
+                thing.innerHTML = model.missedDays[model.names[i]];
+            }
         }
 
         Controller.prototype.addClickHandlers = function() {
@@ -171,11 +172,12 @@ $(function() {
                         checkBox.checked = model.attendance[name][col];
                         model.calcMissedDays(name);
                         view.updateChecked();
-                        view.renderMissedDays();
+                        self.updateMissedDays();
                     });   
                 })(name, col);
             });
         }
+
         return Controller;
     })();
 
